@@ -11,28 +11,29 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 async function main() {
-	const name = "extension"
-	const production = process.argv.includes("--production")
-	const watch = process.argv.includes("--watch")
-	const minify = production
-	const sourcemap = true // Always generate source maps for error handling
+        const name = "extension"
+        const production = process.argv.includes("--production")
+        const watch = process.argv.includes("--watch")
+        const minify = production
+        const sourcemap = true // Always generate source maps for error handling
 
-	/**
-	 * @type {import('esbuild').BuildOptions}
-	 */
-	const buildOptions = {
-		bundle: true,
-		minify,
-		sourcemap,
-		logLevel: "silent",
-		format: "cjs",
-		sourcesContent: false,
-		platform: "node",
-	}
+        const srcDir = __dirname
+        const buildDir = __dirname
+        const distDir = path.join(buildDir, "dist")
 
-	const srcDir = __dirname
-	const buildDir = __dirname
-	const distDir = path.join(buildDir, "dist")
+        /**
+         * @type {import('esbuild').BuildOptions}
+         */
+        const buildOptions = {
+                absWorkingDir: srcDir,
+                bundle: true,
+                minify,
+                sourcemap,
+                logLevel: "silent",
+                format: "cjs",
+                sourcesContent: false,
+                platform: "node",
+        }
 
 	if (fs.existsSync(distDir)) {
 		console.log(`[${name}] Cleaning dist directory: ${distDir}`)
